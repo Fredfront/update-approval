@@ -1,9 +1,10 @@
 // Import required modules
 const { createClient: createSanityClient } = require('@sanity/client');
 const { createClient: createSupabaseClient } = require('@supabase/supabase-js');
+const express = require('express');
+require('dotenv').config();
 
 // Environment variables
-require('dotenv').config();
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
@@ -30,3 +31,12 @@ sanityClient.listen('*').subscribe(async (mutation) => {
 });
 
 console.log('Listening for Sanity changes...');
+
+// Create Express app to keep Render active
+const app = express();
+const PORT = process.env.PORT || 8080;
+
+// Start the Express server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
